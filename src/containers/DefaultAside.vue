@@ -6,7 +6,7 @@
       </template>
       <b-list-group class="list-group-accent">
         <b-list-group-item class="list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">
-          Today
+          {{moment().format('LL')}}
         </b-list-group-item>
         <b-list-group-item href="#" class="list-group-item-accent-warning list-group-item-divider">
           <div class="avatar float-right">
@@ -242,8 +242,15 @@
 
 <script>
 import { Switch as cSwitch } from '@coreui/vue'
+import moment from 'moment-jalaali'
+
 export default {
   name: 'DefaultAside',
+  data :function (){
+    return {
+      moment: moment
+    }
+  },
   components: {
     cSwitch
   }

@@ -106,8 +106,11 @@
 </template>
 
 <script>
-import Axios from 'axios';
+import Axios from 'axios'
+import Var from '../../../variables'
+
 var username,firstname,lastname,email,password
+
 export default {
   name: 'Register',
   data() {
@@ -141,6 +144,8 @@ export default {
       }).then(res => alert(res.statusText))
     }
   },
-  mounted() {}
+  mounted() {
+    alert(Var.url)
+  }
 };
 </script>

@@ -74,7 +74,7 @@ export default {
       }
     })
       .catch(err => {
-        // alert('Connection Error!', err)
+       // alert('Connection Error!', err)
       })
       .then(res => {
         var temp1 = res.data.time_entries

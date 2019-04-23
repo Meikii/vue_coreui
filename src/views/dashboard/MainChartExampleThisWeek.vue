@@ -52,6 +52,8 @@ export default {
       usePersianDigits: true,
       dialect: 'persian-modern'
     })
+    console.log('MOMENT')
+    console.log(moment())
 
     const brandSuccess = getStyle('--success') || '#4dbd74'
 
@@ -131,13 +133,13 @@ export default {
         this.renderChart(
           {
             labels: [
-              moment(new Date()).format('jYYYY/jM/jD'),
-              this.today_1.format('jYYYY/jM/jD'),
-              this.today_2.format('jYYYY/jM/jD'),
-              this.today_3.format('jYYYY/jM/jD'),
-              this.today_4.format('jYYYY/jM/jD'),
-              this.today_5.format('jYYYY/jM/jD'),
-              this.today_6.format('jYYYY/jM/jD')
+              'شنبه',
+              'یکشنبه',
+              'دوشنبه',
+              'سه شنبه',
+              'چهارشنبه',
+              'پنج شنبه',
+              'جمعه'
             ],
             datasets: [
               {

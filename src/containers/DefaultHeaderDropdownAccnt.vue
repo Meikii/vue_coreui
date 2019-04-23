@@ -35,7 +35,7 @@
       </b-dropdown-item>
       <b-dropdown-divider />
       <b-dropdown-item><i class="fa fa-shield" /> Lock Account</b-dropdown-item>
-      <b-dropdown-item onclick="window.localStorage.removeItem('api_key'); window.location.replace('http://localhost/')"><i class="fa fa-lock" /> خروج</b-dropdown-item>
+      <b-dropdown-item onclick="window.localStorage.removeItem('api_key'); window.location.replace('/')"><i class="fa fa-lock" /> خروج</b-dropdown-item>
     </template>
   </AppHeaderDropdown>
 </template>

@@ -5,7 +5,7 @@
         <b-card>
           <div class="h4 m-0">89.9%</div>
           <div>Lorem ipsum...</div>
-          <b-progress height={} class="progress-xs my-3" variant="success" :value="25"/>
+          <b-progress height={} class="progress-xs my-3" variant="success" :value="90"/>
           <small class="text-muted">Lorem ipsum dolor sit amet enim.</small>
         </b-card>
       </b-col>

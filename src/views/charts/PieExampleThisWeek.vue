@@ -1,6 +1,7 @@
 <script>
 import { Pie } from 'vue-chartjs'
 import Axios from 'axios'
+import moment from 'moment-jalaali'
 import Var from '../../../variables'
 
 export default {
@@ -10,21 +11,34 @@ export default {
       activities_name: [],
       activities_data: [],
 
-      baseUrl: Var.url
+      baseUrl: Var.url,
+
+      data: []
     }
   },
+  methods: {},
   mounted() {
-    Axios.get(this.this.baseUrl +  'time_entries.json?user_id=me', {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Redmine-API-Key': window.localStorage.api_key
+    const data1 = []
+
+    var u = new Date().setDate(new Date().getDate() - 6)
+    var from = new Date(u).toISOString().split('T')[0]
+    Axios.get(
+      this.baseUrl +  
+        'time_entries.json?user_id=me&from=' +
+        from +
+        '&to=' +
+        new Date().toISOString().split('T')[0],
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Redmine-API-Key': window.localStorage.api_key
+        }
       }
-    })
+    )
       .catch(err => {
-       // alert('Connection Error!')
+        // alert('Connection Error!')
       })
       .then(res => {
-        // console.log(res.data.time_entries)
         this.activities_name = res.data.time_entries
           .map(x => x.activity.name)
           .filter((v, i, a) => a.indexOf(v) === i)
@@ -44,7 +58,7 @@ export default {
           else this[id].hours += obj.hours
         }, Object.create(null))
 
-        console.log(result)
+        // console.log(result)
 
         this.renderChart(
           {

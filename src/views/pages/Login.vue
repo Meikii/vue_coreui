@@ -4,7 +4,10 @@
       <b-row class='justify-content-center'>
         <b-col md='8'>
           <b-card-group>
-            <b-card no-body class='p-4'>
+            <b-card
+              no-body
+              class='p-4'
+            >
               <b-card-body>
                 <b-form @submit='onSubmit'>
                   <h1>ورود</h1>
@@ -39,23 +42,41 @@
                   </b-input-group>
                   <b-row>
                     <b-col cols='6'>
-                      <b-button type='submit' variant='primary' class='px-4'>
+                      <b-button
+                        type='submit'
+                        variant='primary'
+                        class='px-4'
+                      >
                         <i class='icon-login'></i>ورود
                       </b-button>
                     </b-col>
-                    <b-col cols='6' class='text-right'>
-                      <b-button variant='link' class='px-0'>فراموشی رمز عبور</b-button>
+                    <b-col
+                      cols='6'
+                      class='text-right'
+                    >
+                      <b-button
+                        variant='link'
+                        class='px-0'
+                      >فراموشی رمز عبور</b-button>
                     </b-col>
                   </b-row>
                 </b-form>
               </b-card-body>
             </b-card>
-            <b-card no-body class='text-white bg-primary py-5 d-md-down-none' style='width:44%'>
+            <b-card
+              no-body
+              class='text-white bg-primary py-5 d-md-down-none'
+              style='width:44%'
+            >
               <b-card-body class='text-center'>
                 <div>
                   <h2>ثبت نام</h2>
                   <p>اگر در سامانه عضو نیستید به راحتی می توانید همین الان نام نویسی کنید.</p>
-                  <b-button variant='primary' to='/pages/register' class='active mt-3'>عضویت</b-button>
+                  <b-button
+                    variant='primary'
+                    to='/pages/register'
+                    class='active mt-3'
+                  >عضویت</b-button>
                 </div>
               </b-card-body>
             </b-card>
@@ -68,99 +89,99 @@
 
 <script>
 import Axios from 'axios'
+import Vue from 'vue'
+import Var from '../../../variables'
 
-var username,password,users,selected_user_id,api_key,flag=false
+var username,
+  password,
+  users,
+  selected_user_id,
+  selected_user,
+  api_key,
+  flag = false
 
 export default {
   name: 'Login',
   data() {
     return {
-    username: '',
-    password: ''
+      username: '',
+      password: '',
+
+      baseUrl: Var.url,
+      token: Var.token
     }
   },
   methods: {
     onSubmit(evt) {
-      evt.preventDefault();
-      username = this.username 
-      for(var i in users)
-        if(users[i].login === username)
-          this.flag = true
-        
-        if(this.flag == false)
-          {
-            alert('User/Pass not valid!')
-            return
-          }
-        Axios.get('http://'+this.username+':'+this.password+'@demo.satrapp.com/issues.json', 
-        {
-          // user: {
-          //   login: "" + this.username + "",
-          //   firstname: "" + this.firstname + "",
-          //   lastname: "" + this.lastname + "",
-          //   mail: "" + this.email + "",
-          //   password: "" + this.password + ""
-          // }
-        // ,
-        headers: {
-          //'X-Redmine-API-Key': '74544f408985b051d7310b9644f1622482d70d6f',
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Access-Control-Allow-Origin': '*'
-        },
-        
-      }).then(function(res){
-       
-       //console.log('wdwdwdwdw  '+username)
-       if(res.status == 200){
-          for(var i in users)
-            if(users[i].login==username)
-              selected_user_id = users[i].id
+      evt.preventDefault()
+      username = this.username
+      for (var i in users) if (users[i].login === username) this.flag = true
 
-          Axios.get('http://demo.satrapp.com/users/'+selected_user_id+'.json',{
-            headers:{
-              'X-Redmine-API-Key': '74544f408985b051d7310b9644f1622482d70d6f',
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Access-Control-Allow-Origin': '*'
-            }
-          }).then((res) => {
+      if (this.flag == false) {
+        // alert('User/Pass not valid!')
+        return
+      }
+      // Axios.get('http://'+this.username+':'+this.password+'@demo.satrapp.com/issues.json',
+      Axios.get(
+        'http://' +
+          this.username +
+          ':' +
+          this.password +
+          '@pm.sarmadbs.com/issues.json',
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Accept: '*',
+            'Access-Control-Allow-Credentials': 'true'
+          }
+        }
+      )
+        .catch(function(err) {
+          console.log('FIRST################  ' + err)
+        })
+        .then(function(res) {
+          if (res.status == 200) {
+            for (var i in users)
+              if (users[i].login == username) {
+                selected_user = users[i]
+                selected_user_id = users[i].id
+              }
+
+            window.localStorage.setItem('username',selected_user.login)
+            Axios.get(Var.url + 'users/' + selected_user_id + '.json', {
+              headers: {
+                'X-Redmine-API-Key': Var.token,
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Access-Control-Allow-Origin': '*'
+              }
+            }).then(res => {
               api_key = res.data.user.api_key
               console.log(api_key)
-              window.localStorage.setItem('api_key',api_key)
-              window.location.replace('http://localhost:8080')
-          })
-        }else {
-          alert('User/Password Not Valid')
-        }
-      }
-    ).catch((err) =>console.log(err) )
-   
+              window.localStorage.setItem('api_key', api_key)
+              window.location.replace('/')
+            })
+          } else {
+            // alert('User/Password Not Valid')
+          }
+        })
+      // .catch(err => console.log(err))
     }
-
   },
-  mounted () {
-    //console.log('LOCALSTORAGE     '+window.localStorage.MYVAR)
-    Axios.get('http://demo.satrapp.com/users.json', 
-        {
-          // user: {
-          //   login: "" + this.username + "",
-          //   firstname: "" + this.firstname + "",
-          //   lastname: "" + this.lastname + "",
-          //   mail: "" + this.email + "",
-          //   password: "" + this.password + ""
-          // }
-        // ,
-        headers: {
-          'X-Redmine-API-Key': '74544f408985b051d7310b9644f1622482d70d6f',
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Access-Control-Allow-Origin': '*'
-        },
-        }
-    ).then((res)=>{
+  mounted() {
+    // this.baseUrl = Var.url
+    // this.token = Var.token
+    // alert(Var.url)
+    // console.log('base ' + this.baseUrl)
+    // console.log('var ' + Var.url)
+    Axios.get(this.baseUrl + 'users.json', {
+      headers: {
+        'X-Redmine-API-Key': this.token,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).then(res => {
       users = res.data.users
-      // console.log(res.data.users)
-      // for(var i in res.data.users)
-      //   console.log(res.data.users[i].id)
-
+      console.log(res)
     })
   }
 }
