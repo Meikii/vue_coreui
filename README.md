@@ -77,7 +77,7 @@ CoreUI is built on top of Bootstrap 4 and supports popular frameworks.
 
 ``` bash
 # clone the repo
-$ git clone https://github.com/coreui/coreui-free-vue-admin-template.git CoreUI-Vue
+$ git clone https://github.com/Meikii/vue_coreui
 
 # go into app's directory
 $ cd CoreUI-Vue
